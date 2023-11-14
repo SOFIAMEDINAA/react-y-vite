@@ -1,33 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react';
 import './App.css'
 
+const API = "https://pokeapi.co/api/v2/pokemon/ditto";
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [contador, setContador] = useState(0);
+  const [nombre, setNombre] = useState("def nombre");
+  const [imagen, setImagen] = useState("def imagen");
+
+  useEffect(  () => (
+    async function fetchApi() {
+      const res = await fetch(API);
+      let info = "def info";
+
+      if (res.ok) {
+        info = await res.json();
+        setNombre(info.name);
+        setImagen(info.sprites.front_default);
+
+      }
+    }
+
+));
+
+
+  function aumentar() {
+    setContador(contador + 1);
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>contador</h1>
+      <button onClick={aumentar}>aumentar</button>
+      <h2>{contador}</h2>
+      <h3>{nombre}</h3>
+      <img src={imagen} alt={imagen} />
+
     </>
   )
 }
